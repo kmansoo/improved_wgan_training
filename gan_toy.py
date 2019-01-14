@@ -165,7 +165,7 @@ def generate_image(true_dist):
     plt.scatter(true_dist[:, 0], true_dist[:, 1], c='orange',  marker='+')
     plt.scatter(samples[:, 0],    samples[:, 1],    c='green', marker='+')
 
-    plt.savefig('frame'+str(frame_index[0])+'.jpg')
+    plt.savefig('frame'+str(frame_index[0])+'.png')
     frame_index[0] += 1
 
 # Dataset iterator
