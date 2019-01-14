@@ -52,7 +52,7 @@ ACGAN_SCALE = 1. # How to scale the critic's ACGAN loss relative to WGAN loss
 ACGAN_SCALE_G = 0.1 # How to scale generator's ACGAN loss relative to WGAN loss
 
 if CONDITIONAL and (not ACGAN) and (not NORMALIZATION_D):
-    print "WARNING! Conditional model without normalization in D might be effectively unconditional!"
+    print("WARNING! Conditional model without normalization in D might be effectively unconditional!")
 
 DEVICES = ['/gpu:{}'.format(i) for i in xrange(N_GPUS)]
 if len(DEVICES) == 1: # Hack because the code assumes 2 GPUs
@@ -339,7 +339,7 @@ with tf.Session() as session:
 
 
     for name,grads_and_vars in [('G', gen_gv), ('D', disc_gv)]:
-        print "{} Params:".format(name)
+        print("{} Params:".format(name))
         total_param_count = 0
         for g, v in grads_and_vars:
             shape = v.get_shape()
@@ -351,11 +351,11 @@ with tf.Session() as session:
             total_param_count += param_count
 
             if g == None:
-                print "\t{} ({}) [no grad!]".format(v.name, shape_str)
+                print("\t{} ({}) [no grad!]".format(v.name, shape_str))
             else:
-                print "\t{} ({})".format(v.name, shape_str)
-        print "Total param count: {}".format(
-            locale.format("%d", total_param_count, grouping=True)
+                print("\t{} ({})".format(v.name, shape_str))
+        print("Total param count: {}".format(
+            locale.format("%d", total_param_count, grouping=True))
         )
 
     session.run(tf.initialize_all_variables())

@@ -160,7 +160,7 @@ def generate_image(frame, true_dist):
 samples_100 = Generator(100)
 def get_inception_score():
     all_samples = []
-    for i in xrange(10):
+    for i in range(10):
         all_samples.append(session.run(samples_100))
     all_samples = np.concatenate(all_samples, axis=0)
     all_samples = ((all_samples+1.)*(255./2)).astype('int32')
@@ -171,7 +171,7 @@ def get_inception_score():
 train_gen, dev_gen = lib.cifar10.load(BATCH_SIZE, data_dir=DATA_DIR)
 def inf_train_gen():
     while True:
-        for images,_ in train_gen():
+        for images in train_gen():
             yield images
 
 # Train loop
@@ -179,7 +179,7 @@ with tf.Session() as session:
     session.run(tf.initialize_all_variables())
     gen = inf_train_gen()
 
-    for iteration in xrange(ITERS):
+    for iteration in range(ITERS):
         start_time = time.time()
         # Train generator
         if iteration > 0:
@@ -189,8 +189,8 @@ with tf.Session() as session:
             disc_iters = 1
         else:
             disc_iters = CRITIC_ITERS
-        for i in xrange(disc_iters):
-            _data = gen.next()
+        for i in range(disc_iters):
+            _data = next(gen)
             _disc_cost, _ = session.run([disc_cost, disc_train_op], feed_dict={real_data_int: _data})
             if MODE == 'wgan':
                 _ = session.run(clip_disc_weights)
@@ -206,7 +206,7 @@ with tf.Session() as session:
         # Calculate dev loss and generate samples every 100 iters
         if iteration % 100 == 99:
             dev_disc_costs = []
-            for images,_ in dev_gen():
+            for images in dev_gen():
                 _dev_disc_cost = session.run(disc_cost, feed_dict={real_data_int: images}) 
                 dev_disc_costs.append(_dev_disc_cost)
             lib.plot.plot('dev disc cost', np.mean(dev_disc_costs))
